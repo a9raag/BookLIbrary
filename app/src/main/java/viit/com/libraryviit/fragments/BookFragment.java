@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import viit.com.libraryviit.R;
 import viit.com.libraryviit.adapters.RecyclerViewAdapter;
@@ -93,10 +95,14 @@ public class BookFragment extends Fragment {
                 ArrayList<Book> values =new ArrayList<Book>();
                 int count =0 ;
                 for(DataSnapshot bookSnapShot : dataSnapshot.getChildren()){
-                    Book  b = bookSnapShot.getValue(Book.class);
-                    b.id= bookSnapShot.getKey();
-                    values.add(b);
-                    count++;
+                    Book b = bookSnapShot.getValue(Book.class);
+                    if(b.title.length()<=25) {
+                        b.id = bookSnapShot.getKey();
+                        b.setReserveCount( String.valueOf(randRagne(1, 10)));
+                        Log.v("ReserveCount",b.reserveCount);
+                        values.add(b);
+                        count++;
+                    }
                     if(count>20)
                         break;
                 }
@@ -154,10 +160,12 @@ public class BookFragment extends Fragment {
                             int count = 0;
                             for (DataSnapshot bookSnapShot : dataSnapshot.getChildren()) {
                                 Book b = bookSnapShot.getValue(Book.class);
-
-                                b.id = bookSnapShot.getKey();
-                                values.add(b);
-                                count++;
+                                if(b.title.length()<=25) {
+                                    b.id = bookSnapShot.getKey();
+                                    b.reserveCount = String.valueOf(randRagne(1, 10));
+                                    values.add(b);
+                                    count++;
+                                }
                                 if(count>20)
                                     break;
 
@@ -196,7 +204,10 @@ public class BookFragment extends Fragment {
         super.onDetach();
         mListener = null;
     }
+    public int randRagne(int min, int max){
 
+        return new Random().nextInt((max - min) + 1) + min;
+    }
 //    @Override
 //    public void onClick(View v, int position, String s) {
 //        BookFragment bookFragment = BookFragment.newInstance(position);

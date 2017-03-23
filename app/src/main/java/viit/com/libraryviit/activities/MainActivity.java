@@ -126,9 +126,14 @@ public class MainActivity extends AppCompatActivity
             intent.putExtra(BarcodeCaptureActivity.UseFlash, true);
 
             startActivityForResult(intent, RC_BARCODE_CAPTURE);
-        } else if (id == R.id.nav_gallery) {
+        } else if (id == R.id.booklist) {
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.departments) {
+            Fragment deptFragment = new DepartmentFragment();
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.flContent, deptFragment);
+            transaction.addToBackStack("BookList");
+            transaction.commit();
 
         } else if (id == R.id.nav_manage) {
 

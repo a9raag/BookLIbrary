@@ -104,31 +104,26 @@
 
 
     </TableLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_below="@id/tableLayout"
-        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/tableLayout">
 
 
-        <Button
-            android:id="@+id/reserve"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:theme="@style/MyButton"
-            android:text="Reserved (0)"
-            android:layout_alignBaseline="@+id/rate"
-            android:layout_alignBottom="@+id/rate"
-            android:layout_alignLeft="@+id/tableLayout"
-            android:layout_alignStart="@+id/tableLayout" />
-
-        <Button
-            android:id="@+id/rate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Rate "
-            android:theme="@style/MyButton"
-            android:onClick="updateRating"
-            />
+            <Button
+                android:id="@+id/reserve"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/rate"
+                android:layout_alignBottom="@+id/rate"
+                android:layout_alignLeft="@+id/tableLayout"
+                android:layout_alignStart="@+id/tableLayout"
+                android:text="Reserved (0)"
+                android:onClick="updateReserveCount"
+                android:theme="@style/MyButton" />
         </LinearLayout>
+
     </RelativeLayout>
 </android.support.v4.widget.NestedScrollView>

@@ -16,6 +16,17 @@ public class Book implements Parcelable{
     public String studentRating;
     public String profRating;
 
+    public String getReserveCount() {
+        return reserveCount;
+    }
+
+    public void setReserveCount(String reserveCount) {
+        this.reserveCount = reserveCount;
+    }
+
+    public String reserveCount;
+    public String reservers;
+
     @Override
     public String toString() {
         StringBuilder b = new StringBuilder(this.title);
@@ -27,6 +38,8 @@ public class Book implements Parcelable{
         b.append(this.pubYear);
         b.append("\n");
         b.append(this.profRating);
+        b.append("\n");
+        b.append(this.reserveCount);
         return b.toString();
     }
 

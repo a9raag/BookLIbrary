@@ -7,10 +7,10 @@
             android:icon="@drawable/ic_menu_camera"
             android:title="Scan ISBN" />
         <item
-            android:id="@+id/nav_gallery"
+            android:id="@+id/booklist"
             android:title="Books" />
         <item
-            android:id="@+id/nav_slideshow"
+            android:id="@+id/departments"
             android:title="Departments" />
         <item
             android:id="@+id/nav_manage"

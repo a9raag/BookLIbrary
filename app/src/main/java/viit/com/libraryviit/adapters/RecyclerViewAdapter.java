@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -83,6 +84,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             rating = (TextView) itemView.findViewById(R.id.book_s_rating);
             name = (TextView) itemView.findViewById(R.id.book_title);
             imageView = (ImageView) itemView.findViewById(R.id.book_image);
+
         }
     }
 

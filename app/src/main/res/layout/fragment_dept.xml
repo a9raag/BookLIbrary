@@ -1,0 +1,80 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="viit.com.libraryviit.fragments.DepartmentFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Button
+            android:id="@+id/button9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/button4"
+            android:layout_alignLeft="@+id/button4"
+            android:layout_alignRight="@+id/button4"
+            android:layout_alignStart="@+id/button4"
+            android:layout_below="@+id/button4"
+            android:onClick="selectDepartment"
+            android:layout_marginTop="34dp"
+            android:text="Department of Information Technology"
+            android:theme="@style/MyButton" />
+
+        <Button
+            android:id="@+id/button8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="52dp"
+            android:onClick="selectDepartment"
+            android:text="Department of Computer Engineering"
+            android:theme="@style/MyButton" />
+
+        <Button
+            android:id="@+id/button4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/button3"
+            android:layout_alignLeft="@+id/button3"
+            android:layout_alignRight="@+id/button3"
+            android:layout_alignStart="@+id/button3"
+            android:layout_below="@+id/button3"
+            android:layout_marginTop="28dp"
+            android:onClick="selectDepartment"
+            android:text="Department of Electronics and Telecommunication"
+            android:theme="@style/MyButton" />
+
+        <Button
+            android:id="@+id/button3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/button8"
+            android:layout_alignLeft="@+id/button8"
+            android:layout_alignRight="@+id/button8"
+            android:layout_alignStart="@+id/button8"
+            android:layout_below="@+id/button8"
+            android:layout_marginTop="32dp"
+            android:onClick="selectDepartment"
+            android:text="Department of Civil Engineering"
+            android:theme="@style/MyButton" />
+
+        <Button
+            android:id="@+id/comp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/button9"
+            android:layout_alignLeft="@+id/button9"
+            android:layout_alignRight="@+id/button9"
+            android:layout_alignStart="@+id/button9"
+            android:layout_below="@+id/button9"
+            android:layout_marginTop="29dp"
+            android:onClick="selectDepartment"
+            android:text="Department of Mechanical Engineering"
+            android:theme="@style/MyButton" />
+    </RelativeLayout>
+
+</FrameLayout>

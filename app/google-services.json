@@ -1,0 +1,73 @@
+{
+  "project_info": {
+    "project_number": "273139975833",
+    "firebase_url": "https://cloudtest-d06a1.firebaseio.com",
+    "project_id": "cloudtest-d06a1",
+    "storage_bucket": "cloudtest-d06a1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:273139975833:android:e20d0c010f615ee1",
+        "android_client_info": {
+          "package_name": "com.example.anurag.conducive"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "273139975833-7t3mjdnbtbmuhad0rh4o43upttmj8pdv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBSdHkONCxpSPiEAaQ5JyWP9ORQqdIm3v8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:273139975833:android:8231daa59b4a3740",
+        "android_client_info": {
+          "package_name": "viit.com.libraryviit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "273139975833-7t3mjdnbtbmuhad0rh4o43upttmj8pdv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBSdHkONCxpSPiEAaQ5JyWP9ORQqdIm3v8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

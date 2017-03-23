@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="viit.com.libraryviit.activities.ScrollingActivity"
+    tools:showIn="@layout/activity_scrolling">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+    <TableLayout
+        android:layout_marginTop="28dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/tableLayout">
+        <TableRow>
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20dp"
+                android:text="Title: " />
+
+            <TextView
+                android:id="@+id/book_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/title"
+
+                android:text="Title"
+                android:textSize="20dp"
+                android:textStyle="bold" />
+        </TableRow>
+        <TableRow>
+
+            <TextView
+                android:id="@+id/author"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Author: " />
+
+            <TextView
+                android:id="@+id/book_author"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/author"
+                android:text="Author"
+                android:textStyle="bold" />
+        </TableRow>
+        <TableRow>
+
+            <TextView
+                android:id="@+id/s_rating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Student Rating: " />
+
+            <TextView
+                android:id="@+id/book_s_rating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/s_rating"
+                android:text="0.0"
+                android:textStyle="bold" />
+        </TableRow>
+        <TableRow>
+
+            <TextView
+                android:id="@+id/f_rating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Faculty Rating: " />
+
+            <TextView
+                android:id="@+id/book_f_rating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/f_rating"
+                android:text="0.0"
+                android:textStyle="bold" />
+        </TableRow>
+        <TableRow>
+
+            <TextView
+                android:id="@+id/isbn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ISBN: " />
+
+            <TextView
+                android:id="@+id/book_isbn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/isbn"
+                android:text=""
+                android:textStyle="bold" />
+        </TableRow>
+
+
+    </TableLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_below="@id/tableLayout"
+        android:layout_height="match_parent">
+
+
+        <Button
+            android:id="@+id/reserve"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:theme="@style/MyButton"
+            android:text="Reserved (0)"
+            android:layout_alignBaseline="@+id/rate"
+            android:layout_alignBottom="@+id/rate"
+            android:layout_alignLeft="@+id/tableLayout"
+            android:layout_alignStart="@+id/tableLayout" />
+
+        <Button
+            android:id="@+id/rate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Rate "
+            android:theme="@style/MyButton"
+            android:onClick="updateRating"
+            />
+        </LinearLayout>
+    </RelativeLayout>
+</android.support.v4.widget.NestedScrollView>

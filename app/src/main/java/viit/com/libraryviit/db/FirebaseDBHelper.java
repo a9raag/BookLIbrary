@@ -1,7 +1,9 @@
 package viit.com.libraryviit.db;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -10,9 +12,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
+import viit.com.libraryviit.adapters.RecyclerViewAdapter;
 import viit.com.libraryviit.book.Book;
 import viit.com.libraryviit.fragments.BookRecyclerViewAdapter;
 
@@ -27,12 +32,12 @@ public class FirebaseDBHelper {
          this.mDatabase = FirebaseDatabase.getInstance().getReference();
 
     }
-    public void search(final String text){
+    public void search(final String text, final RecyclerView recyclerView, final Context context){
+        final ArrayList<Book> bookArrayList = new ArrayList<>();
         DatabaseReference mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference();
-        Query query = mFirebaseDatabaseReference.orderByChild("title");
-        query = mFirebaseDatabaseReference.orderByChild("title")
-                .startAt(text)
-                .endAt(text+"\uf8ff");
+        final Query query = mFirebaseDatabaseReference.orderByChild("title");
+//                .startAt(text)
+//                .endAt(text+"\uf8ff");
 
 
         ValueEventListener valueEventListener = new ValueEventListener()
@@ -43,12 +48,17 @@ public class FirebaseDBHelper {
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren())
                 {
                     Book b = postSnapshot.getValue(Book.class);
-                    Log.v(this.getClass().toString(), b.toString());
-                    if (b.title.contains(text)) {
-                        Log.v(this.getClass().toString(), b.title);
+
+                    if (b.title.toLowerCase().contains(text)) {
+
+                        bookArrayList.add(b);
                     }
 
                 }
+                if(bookArrayList.size()==0)
+                    Toast.makeText(context,"No results found of query "+query,Toast.LENGTH_SHORT);
+                recyclerView.setAdapter(new RecyclerViewAdapter(bookArrayList, context));
+
 
             }
 
@@ -59,6 +69,7 @@ public class FirebaseDBHelper {
             }
         };
         query.addValueEventListener(valueEventListener);
+
     }
     public void insertBook(Book book){
         mDatabase.child(book.title).setValue(book);
@@ -107,6 +118,46 @@ public class FirebaseDBHelper {
         });
 
         return bookList;
+
+    }
+    public int randRange(int min, int max){
+
+        return new Random().nextInt((max - min) + 1) + min;
+    }
+    public void setRecyclerView(final RecyclerView recyclerView, final Context context){
+
+        this.mDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                /*for (DataSnapshot alert: dataSnapshot.getChildren()) {
+                    System.out.println(alert.getValue());
+                }*/
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                ArrayList<Book> values =new ArrayList<Book>();
+                int count =0 ;
+                for(DataSnapshot bookSnapShot : dataSnapshot.getChildren()){
+                    Book b = bookSnapShot.getValue(Book.class);
+                    if(b.title.length()<=25) {
+                        b.id = bookSnapShot.getKey();
+                        b.setReserveCount( String.valueOf(randRange(1, 10)));
+                        Log.v("ReserveCount",b.reserveCount);
+                        values.add(b);
+                        count++;
+                    }
+                    if(count>20)
+                        break;
+                }
+                recyclerView.setAdapter(new RecyclerViewAdapter(values, context));
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                System.out.println("Failed to read value." + error.toException());
+            }
+        });
 
     }
 public List<Book> readData(){

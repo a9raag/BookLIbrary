@@ -131,4 +131,5 @@ The success of the books and films has ensured that the Harry Potter franchise c
         "when a user tries to pick up one of cards.\n\n"
     </string>
     <string name="transition_item">transition item</string>
+    <string name="search_book">Search Book</string>
 </resources>

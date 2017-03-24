@@ -15,6 +15,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
@@ -33,7 +35,7 @@ public class ScrollingActivity extends AppCompatActivity implements ImageFrame.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scrolling);
-        book = getIntent().getParcelableExtra("Book");
+        book = (Book) getIntent().getSerializableExtra("Book");
         System.out.println(book.toString());
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -58,7 +60,7 @@ public class ScrollingActivity extends AppCompatActivity implements ImageFrame.O
             }
         });
 
-
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         launchFragment(book.imageLarge);
         book.reserveCount=String.valueOf(randRagne(1, 10));
         TextView title = (TextView) findViewById(R.id.book_title);

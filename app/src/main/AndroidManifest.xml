@@ -20,15 +20,13 @@
             android:value="barcode" />
         <activity
             android:name=".activities.login.Login"
-            android:label="@string/title_activity_login"
+            android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar">
 
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN" /> -->
-
-
-            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-            <!-- </intent-filter> -->
+             <!--<intent-filter>-->
+             <!--<action android:name="android.intent.action.MAIN" />-->
+             <!--<category android:name="android.intent.category.LAUNCHER" />-->
+             <!--</intent-filter>-->
         </activity>
         <activity
             android:name=".activities.MainActivity"
@@ -39,6 +37,11 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+            <!--<meta-data android:name="android.app.searchable"-->
+                <!--/>-->
         </activity>
         <activity
             android:name=".activities.ScrollingActivity"

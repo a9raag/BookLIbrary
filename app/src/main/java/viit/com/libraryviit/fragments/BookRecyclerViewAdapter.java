@@ -12,7 +12,7 @@ import java.util.List;
 
 import viit.com.libraryviit.R;
 import viit.com.libraryviit.book.Book;
-import viit.com.libraryviit.fragments.BookFragment.OnListFragmentInteractionListener;
+import viit.com.libraryviit.book.BookFragment.OnListFragmentInteractionListener;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link Book} and makes a call to the

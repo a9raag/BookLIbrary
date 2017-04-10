@@ -14,7 +14,7 @@
     android:layout_marginLeft="16dp"
     android:layout_marginRight="16dp"
     app:layoutManager="LinearLayoutManager"
-    tools:context="viit.com.libraryviit.fragments.BookFragment"
+    tools:context="viit.com.libraryviit.book.BookFragment"
     android:scrollbars="vertical"
     tools:listitem="@layout/fragment_book" />
 </android.support.v4.widget.SwipeRefreshLayout>

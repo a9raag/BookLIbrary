@@ -7,11 +7,26 @@
 
     <!-- TODO: Update blank fragment layout -->
     <ImageView
-        android:layout_width="fill_parent"
-        android:id="@+id/bgImage"
-        android:scaleType="centerCrop"
-        android:src="@mipmap/ic_launcher"
-        android:layout_height="fill_parent"
-         />
+        android:id="@+id/cover"
+        android:layout_width="100dp"
+        android:layout_height="140dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:background="#424242"
+        android:scaleType="fitXY" />
 
+
+    <TextView
+        android:id="@+id/book_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_toRightOf="@+id/cover"
+        android:fontFamily="sans-serif-light"
+        android:hint="Book title"
+        android:maxLines="3"
+        android:textSize="18sp" />
 </FrameLayout>

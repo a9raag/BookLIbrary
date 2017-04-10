@@ -4,14 +4,14 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.database.MatrixCursor;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.BaseColumns;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
@@ -28,68 +28,172 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.vision.barcode.Barcode;
+import com.google.api.client.extensions.android.http.AndroidHttp;
+import com.google.api.client.extensions.android.json.AndroidJsonFactory;
+import com.google.api.services.books.Books;
+import com.google.api.services.books.model.Volume;
+import com.google.common.primitives.Ints;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
+import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
+import viit.com.libraryviit.BuildConfig;
+import viit.com.libraryviit.notification.BookDueNotification;
 import viit.com.libraryviit.R;
 import viit.com.libraryviit.barcode.BarcodeCaptureActivity;
 import viit.com.libraryviit.book.Book;
 import viit.com.libraryviit.db.FirebaseDBHelper;
-import viit.com.libraryviit.fragments.BookFragment;
+import viit.com.libraryviit.book.BookFragment;
 import viit.com.libraryviit.adapters.RecyclerViewAdapter;
 import viit.com.libraryviit.fragments.DepartmentFragment;
+import viit.com.libraryviit.search.SearchTask;
+import viit.com.libraryviit.user.UserFragment;
+import viit.com.libraryviit.user.User;
+import viit.com.libraryviit.user.UserProfileActivity;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, BookFragment.OnListFragmentInteractionListener,
-        RecyclerViewAdapter.ItemClick, DepartmentFragment.OnFragmentInteractionListener{
+        RecyclerViewAdapter.ItemClick, DepartmentFragment.OnFragmentInteractionListener,
+        UserFragment.OnFragmentInteractionListener{
 
-    private static final int RC_BARCODE_CAPTURE = 9001;;
+    private static final int RC_BARCODE_CAPTURE = 9001;
     private static final String TAG = "MainActivity" ;
+    DrawerLayout mDrawer;
+    private DatabaseReference mDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        if(!isNetworkAvailable()){
+            final RelativeLayout layout = (RelativeLayout) findViewById(R.id.no_internet);
+            layout.setVisibility(View.VISIBLE);
+            Button retry = (Button) findViewById(R.id.retry);
+            retry.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(isNetworkAvailable()){
+                        layout.setVisibility(View.GONE);
+                    }
+                }
+            });
+        }
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        setSupportActionBar(toolbar);   
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
+                this, mDrawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        mDrawer.setDrawerListener(toggle);
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
         //Add a list of books fragment
 //        FragmentManager fragmentManager = getSupportFragmentManager();
 //        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        final FirebaseDBHelper dbHelper = new FirebaseDBHelper();
+//        dbHelper.insertBook(new Book("Game of Thrones","RR Martin"));
+        new GetDataFromFirebase().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        signInUser();
+        mDatabase = FirebaseDatabase.getInstance().getReference("user/1302388");
+
+        final Query query = mDatabase;
+
+        ValueEventListener valueEventListener = new ValueEventListener()
+        {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot)
+            {
+                User u = dataSnapshot.getValue(User.class);
+                System.out.println("User " +u.getBooksReserved().get(0));
+                ArrayList<String> booksReserved = new ArrayList<>();
+//                booksReserved.add("0070722064");
+//                u.setBooksReserved(booksReserved);
+                mDatabase.setValue(u);
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError)
+            {
+
+            }
+        };
+        query.addValueEventListener(valueEventListener);
+         SearchTask searchTask= new SearchTask();
+        searchTask.setSearchListener(new SearchTask.SearchListener() {
+            @Override
+            public void onSearching() {
+                Log.v(TAG, "We are searching the string ");
+            }
+
+            @Override
+            public void onResult(List<Volume> volumes) {
+                for (Volume  v: volumes){
+                    System.out.println(v.getVolumeInfo().getTitle());
+                    for(Volume.VolumeInfo.IndustryIdentifiers identifiers : v.getVolumeInfo().getIndustryIdentifiers()){
+                        System.out.println(identifiers.getIdentifier());
+                        dbHelper.searchBook(identifiers.getIdentifier());
+                    }
+                }
+
+            }
+        });
+        searchTask.execute("Let us C");
+    }
+
+    public List<Volume> search(String query){
+        // If the query seems to be an ISBN we add the isbn special keyword https://developers.google.com/books/docs/v1/using#PerformingSearch
+        if (Ints.tryParse(query) != null && (query.length() == 13 || query.length() == 10)) {
+            query = query.concat("+isbn:" + query);
+        }
+
+        // Creates the books api client
+        Books books = new Books.Builder(AndroidHttp.newCompatibleTransport(), AndroidJsonFactory.getDefaultInstance(), null)
+                .setApplicationName(BuildConfig.APPLICATION_ID)
+                .build();
+
+        try {
+            // Executes the query
+            Books.Volumes.List list = books.volumes().list(query).setProjection("LITE");
+            return list.execute().getItems();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return Collections.emptyList();
+        }
+    }
+    public void loadRegisterFragment(){
+
+    }
+    public void loadDepartmentFragment(){
         Fragment deptFragment = new DepartmentFragment();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.add(R.id.flContent, deptFragment);
         transaction.commit();
-        FirebaseDBHelper dbHelper = new FirebaseDBHelper();
-//        dbHelper.insertBook(new Book("Game of Thrones","RR Martin"));
-        new GetDataFromFirebase().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        signInUser();
     }
     public void signInUser(){
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -156,7 +260,6 @@ public class MainActivity extends AppCompatActivity
                 transaction.commit();
                 return false;
             }
-
             @Override
             public boolean onQueryTextChange(String newText) {
                 populateAdapter(newText);
@@ -166,11 +269,31 @@ public class MainActivity extends AppCompatActivity
         });
         return true;
     }
+    public void loadProfile(View v){
+
+        BookDueNotification.notify(getApplicationContext(),"Book is due",0);
+        mDrawer.closeDrawers();
+        if(isNetworkAvailable()) {
+            Fragment userFragment = new UserFragment();
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.flContent, userFragment);
+            transaction.commit();
+            Intent i = new Intent(getApplicationContext(), UserProfileActivity.class);
+            startActivity(i);
+        }
+    }
     private static final String[] SUGGESTIONS = {
             "Bauru", "Sao Paulo", "Rio de Janeiro",
             "Bahia", "Mato Grosso", "Minas Gerais",
             "Tocantins", "Rio Grande do Sul"
     };
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
     private void populateAdapter(String query) {
         final MatrixCursor c = new MatrixCursor(new String[]{BaseColumns._ID, "BookName"});
         for (int i = 0; i < SUGGESTIONS.length; i++) {

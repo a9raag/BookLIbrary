@@ -22,6 +22,16 @@ public class Book implements Serializable{
     private String pubYear;
     private String isbn;
     public String reserveCount;
+
+    public String getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(String department) {
+        this.department = department;
+    }
+
+    public String department;
     public ArrayList<String> reservers;
     public String getReserveCount() {
         return reserveCount;

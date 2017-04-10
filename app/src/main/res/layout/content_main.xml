@@ -12,6 +12,33 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="viit.com.libraryviit.activities.MainActivity"
     tools:showIn="@layout/app_bar_main">
+    <RelativeLayout android:layout_width="match_parent"
+        android:id="@+id/no_internet"
+        android:visibility="gone"
+        android:layout_height="match_parent">
+
+        <Button
+            android:id="@+id/retry"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textView2"
+            android:gravity="center"
+            android:text="@string/retry"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_weight="1"
+            android:text="No Internet Connection" />
+
+    </RelativeLayout>
     <FrameLayout
         android:id="@+id/flContent"
         android:layout_width="match_parent"

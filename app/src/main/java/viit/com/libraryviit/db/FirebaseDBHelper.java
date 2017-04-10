@@ -20,21 +20,42 @@ import java.util.Random;
 import viit.com.libraryviit.adapters.RecyclerViewAdapter;
 import viit.com.libraryviit.book.Book;
 import viit.com.libraryviit.fragments.BookRecyclerViewAdapter;
+import viit.com.libraryviit.user.User;
 
 /**
  * Created by anurag on 23/2/17.
  */
 
 public class FirebaseDBHelper {
+    private static final String TAG ="FirebaseDBHelper" ;
     final DatabaseReference mDatabase;
     public static List<Book> bookList;
     public FirebaseDBHelper() {
          this.mDatabase = FirebaseDatabase.getInstance().getReference();
 
     }
+    public void searchBook(String query){
+        Log.v(TAG,query);
+        DatabaseReference mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference("books/"+query);
+        ValueEventListener valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Book book= dataSnapshot.getValue(Book.class);
+                if(book != null){
+//                    System.out.println("Book Exists in firebase\n\t"+book.getTitle());
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
+        mFirebaseDatabaseReference.addValueEventListener(valueEventListener);
+    }
     public void search(final String text, final RecyclerView recyclerView, final Context context){
         final ArrayList<Book> bookArrayList = new ArrayList<>();
-        DatabaseReference mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference("books/"+text);
         final Query query = mFirebaseDatabaseReference.orderByChild("title");
 //                .startAt(text)
 //                .endAt(text+"\uf8ff");

@@ -1,0 +1,117 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#2ea67f"
+    tools:context="viit.com.libraryviit.user.UserFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp">
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/tl_library_no"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorHint="#f0f7f4"
+            android:layout_marginBottom="10dp"
+            android:theme="@style/TextLabel">
+
+            <EditText
+                android:id="@+id/et_library_no"
+                android:layout_width="match_parent"
+                android:layout_height="34dp"
+                android:background="@drawable/selector_bg_edit_2"
+                android:hint="@string/library_no"
+                android:inputType="textPersonName"
+                android:paddingBottom="4dp"
+                android:textColor="#f0f7f4"
+                android:textCursorDrawable="@drawable/bg_input_cursor_2" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/fullName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_below="@id/tl_library_no"
+            android:textColorHint="#f0f7f4"
+            android:theme="@style/TextLabel">
+            <EditText
+                android:id="@+id/et_full_name"
+                android:layout_width="match_parent"
+                android:layout_height="31dp"
+                android:background="@drawable/selector_bg_edit_2"
+                android:hint="@string/full_name"
+                android:inputType="textPersonName"
+                android:paddingBottom="6dp"
+                android:textColor="#f0f7f4"
+                android:textCursorDrawable="@drawable/bg_input_cursor_2" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/tl_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/fullName"
+            android:layout_marginBottom="10dp"
+            android:textColorHint="#f0f7f4"
+            android:theme="@style/TextLabel">
+
+            <EditText
+                android:id="@+id/et_email"
+                android:layout_width="match_parent"
+                android:layout_height="31dp"
+                android:background="@drawable/selector_bg_edit_2"
+                android:hint="@string/prompt_email"
+                android:inputType="textEmailAddress"
+                android:paddingBottom="6dp"
+                android:textColor="#f0f7f4"
+                android:textCursorDrawable="@drawable/bg_input_cursor_2" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/tl_phno"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tl_email"
+            android:textColorHint="#f0f7f4"
+            android:theme="@style/TextLabel">
+
+            <EditText
+                android:id="@+id/et_phno"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/selector_bg_edit_2"
+                android:hint="@string/mobileno"
+                android:inputType="numberDecimal"
+                android:paddingBottom="6dp"
+                android:textColor="#f0f7f4"
+                android:textCursorDrawable="@drawable/bg_input_cursor_2" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/tl_dept"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tl_phno"
+            android:theme="@style/TextLabel">
+
+        </android.support.design.widget.TextInputLayout>
+
+        <Spinner
+            android:id="@+id/dept_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:layout_marginTop="12dp"
+            android:textColorHint="#f0f7f4"
+            android:layout_below="@+id/tl_dept"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+    </RelativeLayout>
+
+</FrameLayout>

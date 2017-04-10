@@ -82,7 +82,7 @@ public class ImageFrame extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_image_frame, container, false);
-        ImageView v = (ImageView) view.findViewById(R.id.bgImage);
+        ImageView v = (ImageView) view.findViewById(R.id.cover);
         picassoLoader(getContext(),v, mParam1);
 //        view.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
 //

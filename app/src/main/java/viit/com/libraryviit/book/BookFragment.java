@@ -96,18 +96,17 @@ public class BookFragment extends Fragment {
         if(query != null){
             System.out.println("Searching for "+query);
             search(query);
-            dbHelper.search(query,recyclerView,getContext());
 
         }
         else {
-            dbHelper.setRecyclerView(recyclerView, getContext());
+//            dbHelper.setRecyclerView(recyclerView, getContext());
         }
         final SwipeRefreshLayout mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout);
         mSwipeRefreshLayout.setEnabled(true);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                        dbHelper.setRecyclerView(recyclerView,getContext());
+                        search(query);
                         mSwipeRefreshLayout.setRefreshing(false);
                     }
         });
@@ -131,7 +130,6 @@ public class BookFragment extends Fragment {
                     else {
                         Book b= new Book(v);
                         books.add(b);
-
                         System.out.println(b.getTitle());
                     }
                 }

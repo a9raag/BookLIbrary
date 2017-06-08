@@ -25,7 +25,7 @@ public class Book implements Serializable{
     private String pubYear;
     private String isbn;
     public String reserveCount;
-
+    public String description;
     public String getDepartment() {
         return department;
     }
@@ -37,6 +37,7 @@ public class Book implements Serializable{
             this.isbn = v.getVolumeInfo().getIndustryIdentifiers()!=null ? v.getVolumeInfo().getIndustryIdentifiers().get(0).getIdentifier():"";
             this.studentRating ="4.0";
             this.profRating = "5.0";
+            this.description = v.getVolumeInfo().getDescription();
     }
     public void setDepartment(String department) {
         this.department = department;
@@ -66,6 +67,8 @@ public class Book implements Serializable{
         b.append("Professor's rating :"+this.profRating);
         b.append("\n");
         b.append("Reserve Count :"+this.reserveCount);
+        b.append("\n");
+        b.append("Description: "+this.description);
         return b.toString();
     }
 
@@ -91,11 +94,7 @@ public class Book implements Serializable{
         profRating = in.readString();
         isbn = in.readString();
         pubYear = in.readString();
-
-
-
-
-
+        description = in.readString();
 
     }
 
@@ -176,6 +175,7 @@ public class Book implements Serializable{
         this.pubYear ="";
         this.reserveCount="0";
         this.reservers=new ArrayList<>();
+        this.description ="";
         reservers.add("anurag");
         reservers.add("krushika");
     }

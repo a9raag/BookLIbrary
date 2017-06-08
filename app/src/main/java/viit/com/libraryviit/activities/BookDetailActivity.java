@@ -67,6 +67,7 @@ public class BookDetailActivity extends AppCompatActivity implements ImageFrame.
         TextView author = (TextView) findViewById(R.id.book_author);
         TextView sRating = (TextView) findViewById(R.id.book_s_rating);
         TextView fRating = (TextView) findViewById(R.id.book_f_rating);
+        TextView description = (TextView) findViewById(R.id.description_data);
         Button reserve = (Button) findViewById(R.id.reserve);
         TextView isbn = (TextView) findViewById(R.id.book_isbn);
         title.setText(book.title);
@@ -74,6 +75,7 @@ public class BookDetailActivity extends AppCompatActivity implements ImageFrame.
         sRating.setText(book.getRating());
         fRating.setText(book.getRating());
         isbn.setText(book.getIsbn());
+        description.setText(book.description);
         reserve.setText("Reserve Count ("+book.reserveCount +")");
 
 

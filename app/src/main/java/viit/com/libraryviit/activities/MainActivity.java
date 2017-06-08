@@ -116,7 +116,7 @@ public class MainActivity extends AppCompatActivity
         final FirebaseDBHelper dbHelper = new FirebaseDBHelper();
 //        dbHelper.insertBook(new Book("Game of Thrones","RR Martin"));
         new GetDataFromFirebase().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        mDatabase = FirebaseDatabase.getInstance().getReference("user/1302383");
+        mDatabase = FirebaseDatabase.getInstance().getReference("user/1302388");
 
         final Query query = mDatabase;
 
@@ -257,7 +257,7 @@ public class MainActivity extends AppCompatActivity
         mDrawer.closeDrawers();
         if(isNetworkAvailable()) {
             new GetDataFromFirebase().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-            mDatabase = FirebaseDatabase.getInstance().getReference("user/13023");
+            mDatabase = FirebaseDatabase.getInstance().getReference("user/1302388");
 
             final Query query = mDatabase;
 
@@ -366,7 +366,6 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    public String[] titles = new String[]{"life of pi", "harry potter"};
     @Override
     public void onClick(View v, int position, Book b) {
         Intent intent = new Intent(this, BookDetailActivity.class);

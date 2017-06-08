@@ -124,7 +124,21 @@
                 android:text="Reserved (0)"
                 android:onClick="updateReserveCount"
                 android:theme="@style/MyButton" />
-        </LinearLayout>
 
+        </LinearLayout>
+        <TextView
+            android:id="@+id/description"
+            android:layout_width="match_parent"
+            android:text="Description:"
+            android:textSize="20dp"
+            android:textColor="@android:color/black"
+            android:layout_below="@id/linearLayout"
+            android:layout_height="match_parent" />
+        <TextView
+            android:id="@+id/description_data"
+            android:layout_width="match_parent"
+            android:text=""
+            android:layout_below="@id/description"
+            android:layout_height="match_parent" />
     </RelativeLayout>
 </android.support.v4.widget.NestedScrollView>

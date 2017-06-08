@@ -57,24 +57,24 @@ public class BookGridViewAdapter extends ArrayAdapter {
         return row;
     }
 
-    public void picassoLoader(Context context, ImageView imageView, String url){
-            try {
-                Picasso.with(context)
-                        .load(url)
-                        //.resize(30,30)
-                        .placeholder(R.mipmap.ic_launcher)
-                        .error(R.mipmap.ic_launcher)
-                        .into(imageView);
-            }catch (Exception e){
-                Picasso.with(context)
-                        .load("http://img.clipartall.com/boy-reading-a-book-clip-art-reading-book-clipart-436_500.png")
-                        //.resize(30,30)
-                        .placeholder(R.mipmap.ic_launcher)
-                        .error(R.mipmap.ic_launcher)
-                        .into(imageView);
-            }
+        public void picassoLoader(Context context, ImageView imageView, String url){
+                try {
+                    Picasso.with(context)
+                            .load(url)
+                            //.resize(30,30)
+                            .placeholder(R.mipmap.ic_launcher)
+                            .error(R.mipmap.ic_launcher)
+                            .into(imageView);
+                }catch (Exception e){
+                    Picasso.with(context)
+                            .load("http://img.clipartall.com/boy-reading-a-book-clip-art-reading-book-clipart-436_500.png")
+                            //.resize(30,30)
+                            .placeholder(R.mipmap.ic_launcher)
+                            .error(R.mipmap.ic_launcher)
+                            .into(imageView);
+                }
 
-    }
+        }
     static class ViewHolder {
         TextView imageTitle;
         ImageView image;

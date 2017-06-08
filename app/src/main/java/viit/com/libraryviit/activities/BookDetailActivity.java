@@ -61,7 +61,7 @@ public class BookDetailActivity extends AppCompatActivity implements ImageFrame.
         });
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        launchFragment(book.imageLarge);
+        launchFragment(book.imageSmall);
         book.reserveCount=String.valueOf(randRagne(1, 10));
         TextView title = (TextView) findViewById(R.id.book_title);
         TextView author = (TextView) findViewById(R.id.book_author);
@@ -98,6 +98,24 @@ public class BookDetailActivity extends AppCompatActivity implements ImageFrame.
         transaction.commit();
     }
 
+    public void picassoLoader(Context context, ImageView imageView, String url){
+        try {
+            Picasso.with(context)
+                    .load(url)
+                    //.resize(30,30)
+                    .placeholder(R.mipmap.ic_launcher)
+                    .error(R.mipmap.ic_launcher)
+                    .into(imageView);
+        }catch (Exception e){
+            Picasso.with(context)
+                    .load("http://img.clipartall.com/boy-reading-a-book-clip-art-reading-book-clipart-436_500.png")
+                    //.resize(30,30)
+                    .placeholder(R.mipmap.ic_launcher)
+                    .error(R.mipmap.ic_launcher)
+                    .into(imageView);
+        }
+
+    }
     public void updateRating(View v){
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
         mDatabase.child("0").child("rating").setValue("5 ");

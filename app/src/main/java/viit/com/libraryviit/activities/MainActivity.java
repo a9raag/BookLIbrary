@@ -257,7 +257,7 @@ public class MainActivity extends AppCompatActivity
         mDrawer.closeDrawers();
         if(isNetworkAvailable()) {
             new GetDataFromFirebase().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-            mDatabase = FirebaseDatabase.getInstance().getReference("user/1302329");
+            mDatabase = FirebaseDatabase.getInstance().getReference("user/13023");
 
             final Query query = mDatabase;
 

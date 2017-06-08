@@ -104,14 +104,24 @@ public class ImageFrame extends Fragment {
         return view;
 
     }
+
     public void picassoLoader(Context context, ImageView imageView, String url){
-        Log.d("PICASSO", "loading imageSmall");
-        Picasso.with(context)
-                .load(url)
-                //.resize(30,30)
-                .placeholder(R.mipmap.ic_launcher)
-                .error(R.mipmap.ic_launcher)
-                .into(imageView);
+        try {
+            Picasso.with(context)
+                    .load(url)
+                    //.resize(30,30)
+                    .placeholder(R.mipmap.ic_launcher)
+                    .error(R.mipmap.ic_launcher)
+                    .into(imageView);
+        }catch (Exception e){
+            Picasso.with(context)
+                    .load("http://img.clipartall.com/boy-reading-a-book-clip-art-reading-book-clipart-436_500.png")
+                    //.resize(30,30)
+                    .placeholder(R.mipmap.ic_launcher)
+                    .error(R.mipmap.ic_launcher)
+                    .into(imageView);
+        }
+
     }
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {

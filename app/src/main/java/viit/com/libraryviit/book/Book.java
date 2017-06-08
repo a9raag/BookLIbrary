@@ -25,7 +25,6 @@ public class Book implements Serializable{
     private String pubYear;
     private String isbn;
     public String reserveCount;
-    public Volume volume;
 
     public String getDepartment() {
         return department;
@@ -38,9 +37,6 @@ public class Book implements Serializable{
             this.isbn = v.getVolumeInfo().getIndustryIdentifiers()!=null ? v.getVolumeInfo().getIndustryIdentifiers().get(0).getIdentifier():"";
             this.studentRating ="4.0";
             this.profRating = "5.0";
-        this.volume = v;
-
-
     }
     public void setDepartment(String department) {
         this.department = department;
@@ -95,7 +91,12 @@ public class Book implements Serializable{
         profRating = in.readString();
         isbn = in.readString();
         pubYear = in.readString();
-        volume = in.readParcelable(getClass().getClassLoader());
+
+
+
+
+
+
     }
 
 //    public static final Creator<Book> CREATOR = new Creator<Book>() {

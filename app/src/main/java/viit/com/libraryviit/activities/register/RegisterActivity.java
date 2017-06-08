@@ -177,7 +177,6 @@ public class RegisterActivity extends AppCompatActivity {
         });
         mAnimator.start();
     }
-
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public void animateRevealClose() {
         Animator mAnimator = ViewAnimationUtils.createCircularReveal(cvAdd,cvAdd.getWidth()/2,0, cvAdd.getHeight(), fab.getWidth() / 2);

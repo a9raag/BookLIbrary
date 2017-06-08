@@ -29,7 +29,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -52,29 +51,28 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import viit.com.libraryviit.BuildConfig;
-import viit.com.libraryviit.notification.BookDueNotification;
 import viit.com.libraryviit.R;
+import viit.com.libraryviit.adapters.RecyclerViewAdapter;
 import viit.com.libraryviit.barcode.BarcodeCaptureActivity;
 import viit.com.libraryviit.book.Book;
-import viit.com.libraryviit.db.FirebaseDBHelper;
 import viit.com.libraryviit.book.BookFragment;
-import viit.com.libraryviit.adapters.RecyclerViewAdapter;
+import viit.com.libraryviit.db.FirebaseDBHelper;
+import viit.com.libraryviit.fragments.BookGridViewFragment;
 import viit.com.libraryviit.fragments.DepartmentFragment;
-import viit.com.libraryviit.search.SearchTask;
-import viit.com.libraryviit.user.UserFragment;
+import viit.com.libraryviit.notification.BookDueNotification;
 import viit.com.libraryviit.user.User;
+import viit.com.libraryviit.user.UserFragment;
 import viit.com.libraryviit.user.UserProfileActivity;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, BookFragment.OnListFragmentInteractionListener,
         RecyclerViewAdapter.ItemClick, DepartmentFragment.OnFragmentInteractionListener,
-        UserFragment.OnFragmentInteractionListener{
+        UserFragment.OnFragmentInteractionListener, BookGridViewFragment.OnFragmentInteractionListener{
 
     private static final int RC_BARCODE_CAPTURE = 9001;
     private static final String TAG = "MainActivity" ;
@@ -118,8 +116,7 @@ public class MainActivity extends AppCompatActivity
         final FirebaseDBHelper dbHelper = new FirebaseDBHelper();
 //        dbHelper.insertBook(new Book("Game of Thrones","RR Martin"));
         new GetDataFromFirebase().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        signInUser();
-        mDatabase = FirebaseDatabase.getInstance().getReference("user/1302388");
+        mDatabase = FirebaseDatabase.getInstance().getReference("user/1302383");
 
         final Query query = mDatabase;
 
@@ -129,7 +126,7 @@ public class MainActivity extends AppCompatActivity
             public void onDataChange(DataSnapshot dataSnapshot)
             {
                 User u = dataSnapshot.getValue(User.class);
-                System.out.println("User " +u.getBooksReserved().get(0));
+                System.out.println(u.getFirstName());
                 ArrayList<String> booksReserved = new ArrayList<>();
 //                booksReserved.add("0070722064");
 //                u.setBooksReserved(booksReserved);
@@ -144,26 +141,11 @@ public class MainActivity extends AppCompatActivity
             }
         };
         query.addValueEventListener(valueEventListener);
-         SearchTask searchTask= new SearchTask();
-        searchTask.setSearchListener(new SearchTask.SearchListener() {
-            @Override
-            public void onSearching() {
-                Log.v(TAG, "We are searching the string ");
-            }
+        Fragment gridViewFragment = new BookGridViewFragment();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.add(R.id.flContent, gridViewFragment);
+        transaction.commit();
 
-            @Override
-            public void onResult(List<Volume> volumes) {
-                for (Volume  v: volumes){
-                    System.out.println(v.getVolumeInfo().getTitle());
-                    for(Volume.VolumeInfo.IndustryIdentifiers identifiers : v.getVolumeInfo().getIndustryIdentifiers()){
-                        System.out.println(identifiers.getIdentifier());
-                        dbHelper.searchBook(identifiers.getIdentifier());
-                    }
-                }
-
-            }
-        });
-        searchTask.execute("Let us C");
     }
 
     public List<Volume> search(String query){
@@ -274,12 +256,38 @@ public class MainActivity extends AppCompatActivity
         BookDueNotification.notify(getApplicationContext(),"Book is due",0);
         mDrawer.closeDrawers();
         if(isNetworkAvailable()) {
-            Fragment userFragment = new UserFragment();
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.flContent, userFragment);
-            transaction.commit();
-            Intent i = new Intent(getApplicationContext(), UserProfileActivity.class);
-            startActivity(i);
+            new GetDataFromFirebase().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            mDatabase = FirebaseDatabase.getInstance().getReference("user/1302329");
+
+            final Query query = mDatabase;
+
+            ValueEventListener valueEventListener = new ValueEventListener()
+            {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot)
+                {
+                    User u = dataSnapshot.getValue(User.class);
+//                booksReserved.add("0070722064");
+//                u.setBooksReserved(booksReserved);
+                    mDatabase.setValue(u);
+//                    Fragment userFragment = new UserFragment().newInstance(u);
+//
+//                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+//                    transaction.replace(R.id.flContent, userFragment);
+//                    transaction.commit();
+                    Intent i = new Intent(getApplicationContext(), UserProfileActivity.class);
+                    i.putExtra("user",u);
+                    startActivity(i);
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError)
+                {
+
+                }
+            };
+            query.addValueEventListener(valueEventListener);
+
         }
     }
     private static final String[] SUGGESTIONS = {
@@ -361,7 +369,7 @@ public class MainActivity extends AppCompatActivity
     public String[] titles = new String[]{"life of pi", "harry potter"};
     @Override
     public void onClick(View v, int position, Book b) {
-        Intent intent = new Intent(this, ScrollingActivity.class);
+        Intent intent = new Intent(this, BookDetailActivity.class);
 
         intent.putExtra("Book", b);
         ActivityOptionsCompat options =

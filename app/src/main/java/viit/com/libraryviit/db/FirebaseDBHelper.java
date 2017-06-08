@@ -71,7 +71,7 @@ public class FirebaseDBHelper {
                     Book b = postSnapshot.getValue(Book.class);
 
                     if (b.title.toLowerCase().contains(text)) {
-
+                        Log.v(TAG,b.title);
                         bookArrayList.add(b);
                     }
 

@@ -38,13 +38,24 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     }
 
+
     public void picassoLoader(Context context, ImageView imageView, String url){
-        Picasso.with(context)
-                .load(url)
-                //.resize(30,30)
-                .placeholder(R.mipmap.ic_launcher)
-                .error(R.mipmap.ic_launcher)
-                .into(imageView);
+        try {
+            Picasso.with(context)
+                    .load(url)
+                    //.resize(30,30)
+                    .placeholder(R.mipmap.ic_launcher)
+                    .error(R.mipmap.ic_launcher)
+                    .into(imageView);
+        }catch (Exception e){
+            Picasso.with(context)
+                    .load("http://img.clipartall.com/boy-reading-a-book-clip-art-reading-book-clipart-436_500.png")
+                    //.resize(30,30)
+                    .placeholder(R.mipmap.ic_launcher)
+                    .error(R.mipmap.ic_launcher)
+                    .into(imageView);
+        }
+
     }
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {

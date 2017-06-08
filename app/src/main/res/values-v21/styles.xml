@@ -16,6 +16,9 @@
         <item name="colorPrimary">#03A9F4</item>
         <item name="colorPrimaryDark">#0288D1</item>
         <item name="colorAccent">#2fa881</item>
+        <!--<item name="colorPrimary">@color/colorPrimary</item>-->
+        <!--<item name="colorPrimaryDark">@color/colorPrimaryDark</item>-->
+        <!--<item name="colorAccent">@color/colorAccent</item>-->
         <!-- set Can use Activity transitions -->
         <item name="android:windowContentTransitions">true</item>
     </style>

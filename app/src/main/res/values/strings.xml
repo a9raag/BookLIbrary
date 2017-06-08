@@ -162,4 +162,5 @@ The success of the books and films has ensured that the Harry Potter franchise c
     <string name="title_activity_user_profile">User Profile</string>
     <string name="section_format">No Books: %1$s</string>
     <string name="retry">Retry</string>
+    <string name="click_here">Click here to Register</string>
 </resources>

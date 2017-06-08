@@ -1,6 +1,5 @@
 package viit.com.libraryviit.activities.login;
 
-import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;

@@ -3,9 +3,12 @@ package viit.com.libraryviit.book;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.api.services.books.model.Volume;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by anurag on 23/2/17.
@@ -22,11 +25,23 @@ public class Book implements Serializable{
     private String pubYear;
     private String isbn;
     public String reserveCount;
+    public Volume volume;
 
     public String getDepartment() {
         return department;
     }
+    public Book(Volume v){
 
+            this.title = v.getVolumeInfo().getTitle().replace("\n"," ");
+            this.imageSmall = v.getVolumeInfo().getImageLinks().getThumbnail();
+            this.author = v.getVolumeInfo().getAuthors()!= null? v.getVolumeInfo().getAuthors().toString():"";
+            this.isbn = v.getVolumeInfo().getIndustryIdentifiers()!=null ? v.getVolumeInfo().getIndustryIdentifiers().get(0).getIdentifier():"";
+            this.studentRating ="4.0";
+            this.profRating = "5.0";
+        this.volume = v;
+
+
+    }
     public void setDepartment(String department) {
         this.department = department;
     }
@@ -80,12 +95,7 @@ public class Book implements Serializable{
         profRating = in.readString();
         isbn = in.readString();
         pubYear = in.readString();
-
-
-
-
-
-
+        volume = in.readParcelable(getClass().getClassLoader());
     }
 
 //    public static final Creator<Book> CREATOR = new Creator<Book>() {

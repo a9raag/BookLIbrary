@@ -29,7 +29,7 @@ import viit.com.libraryviit.fragments.DepartmentFragment;
 import viit.com.libraryviit.fragments.ImageFrame;
 import viit.com.libraryviit.fragments.RatingsFrame;
 
-public class ScrollingActivity extends AppCompatActivity implements ImageFrame.OnFragmentInteractionListener,RatingsFrame.OnFragmentInteractionListener{
+public class BookDetailActivity extends AppCompatActivity implements ImageFrame.OnFragmentInteractionListener,RatingsFrame.OnFragmentInteractionListener{
     public Book book;
     @Override
     protected void onCreate(Bundle savedInstanceState) {

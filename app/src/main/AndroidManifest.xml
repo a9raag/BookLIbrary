@@ -36,7 +36,6 @@
             android:name=".activities.MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar">
-            x`
             <!-- <intent-filter> -->
             <!-- <action android:name="android.intent.action.MAIN" /> -->
 
@@ -53,7 +52,7 @@
             android:name=".activities.register.RegisterActivity"
              />
         <activity
-            android:name=".activities.ScrollingActivity"
+            android:name=".activities.BookDetailActivity"
             android:label="@string/title_activity_scrolling"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".barcode.BarcodeCaptureActivity" />

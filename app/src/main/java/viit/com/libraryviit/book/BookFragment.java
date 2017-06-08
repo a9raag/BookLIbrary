@@ -7,16 +7,30 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.api.client.extensions.android.http.AndroidHttp;
+import com.google.api.client.extensions.android.json.AndroidJsonFactory;
+import com.google.api.services.books.Books;
+import com.google.api.services.books.model.Volume;
+import com.google.common.primitives.Ints;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
+import viit.com.libraryviit.BuildConfig;
 import viit.com.libraryviit.R;
+import viit.com.libraryviit.adapters.BookGridViewAdapter;
+import viit.com.libraryviit.adapters.RecyclerViewAdapter;
 import viit.com.libraryviit.db.FirebaseDBHelper;
 import viit.com.libraryviit.fragments.BookRecyclerViewAdapter;
+import viit.com.libraryviit.search.SearchTask;
 
 /**
  * A fragment representing a list of Items.
@@ -29,6 +43,7 @@ public class BookFragment extends Fragment {
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
     private  static final String ARG_QUERY = "query";
+    private static final String TAG = "BookFragment";
     // TODO: Customize parameters
     private int mColumnCount = 1;
     private String query;
@@ -80,7 +95,7 @@ public class BookFragment extends Fragment {
         final FirebaseDBHelper dbHelper = new FirebaseDBHelper();
         if(query != null){
             System.out.println("Searching for "+query);
-
+            search(query);
             dbHelper.search(query,recyclerView,getContext());
 
         }
@@ -98,7 +113,34 @@ public class BookFragment extends Fragment {
         });
         return view;
     }
+    public void search(String query){
+        final ArrayList<Book> books = new ArrayList<>();
+        SearchTask searchTask= new SearchTask();
+        searchTask.setSearchListener(new SearchTask.SearchListener() {
+            @Override
+            public void onSearching() {
+                Log.v(TAG, "We are searching the string ");
+            }
 
+            @Override
+            public void onResult(List<Volume> volumes) {
+                for (Volume  v: volumes){
+                    System.out.println(v.getVolumeInfo().getTitle());
+                    if(v.getVolumeInfo().getImageLinks()==null)
+                        continue;
+                    else {
+                        Book b= new Book(v);
+                        books.add(b);
+
+                        System.out.println(b.getTitle());
+                    }
+                }
+                recyclerView.setAdapter(new RecyclerViewAdapter(books, getContext()));
+            }
+        });
+        searchTask.execute(query);
+
+    }
 
     @Override
     public void onAttach(Context context) {

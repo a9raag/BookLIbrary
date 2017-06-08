@@ -1,6 +1,5 @@
 package viit.com.libraryviit.activities.login;
 
-import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -30,8 +29,8 @@ public class Login extends AppCompatActivity {
     Button btGo;
     @InjectView(R.id.cv)
     CardView cv;
-    @InjectView(R.id.fab)
-    FloatingActionButton fab;
+//    @InjectView(R.id.fab)
+//    FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -111,20 +111,14 @@
                     >
                 </Button>
             </RelativeLayout>
-            <TextView
-                android:layout_marginTop="5dp"
-                android:layout_gravity="center_horizontal"
-                android:textColor="#9a9a9a"
-                android:textSize="12sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/forgot_your_password"
-                />
+
+
         </LinearLayout>
     </android.support.v7.widget.CardView>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
+        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:fabSize="normal"
@@ -136,5 +130,17 @@
         android:layout_marginEnd="-20dp"
         android:layout_alignRight="@id/cv"
         android:layout_marginRight="-20dp" />
+    <Button
+        android:id="@+id/register"
+        android:gravity="center"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:background="@drawable/bt_shape"
+        android:stateListAnimator="@drawable/state_list_animator_z"
+        android:text="@string/register"
+        android:textColor="#d3d3d3"
+        android:layout_below="@+id/cv"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="19dp" />
 
 </RelativeLayout>

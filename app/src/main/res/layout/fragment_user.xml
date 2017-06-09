@@ -3,9 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="#2ea67f"
+    android:background="#BDBDBD"
     tools:context="viit.com.libraryviit.user.UserFragment">
-
+    <!--"#2ea67f"-->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -76,18 +77,18 @@ public class UserFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_user, container, false);
-        final EditText name = (EditText) view.findViewById(R.id.et_full_name);
-        final EditText mobile = (EditText) view.findViewById(R.id.et_phno);
-        final EditText email = (EditText) view.findViewById(R.id.et_email);
-        final EditText libraryNo = (EditText) view.findViewById(R.id.et_library_no);
-        final Spinner spinner = (Spinner)view.findViewById(R.id.dept_spinner);
+        final TextView name = (TextView) view.findViewById(R.id.et_full_name);
+        final TextView mobile = (TextView) view.findViewById(R.id.et_phno);
+        final TextView email = (TextView) view.findViewById(R.id.et_email);
+        final TextView libraryNo = (TextView) view.findViewById(R.id.et_library_no);
+        final TextView spinner = (TextView) view.findViewById(R.id.et_dept);
 // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
                 R.array.dept_array, android.R.layout.simple_spinner_item);
 // Specify the layout to use when the list of choices appears
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 // Apply the adapter to the spinner
-        spinner.setAdapter(adapter);
+        spinner.setText(user.getDepartment());
 
         User tempUser= user;
         ArrayList<String> booksReserved = new ArrayList<>();
@@ -99,7 +100,7 @@ public class UserFragment extends Fragment {
 //                user.setBooksReserved(booksReserved);
 //                mDatabase.setValue(user);
 
-        spinner.setSelection(getDepartmentId(tempUser.getDepartment()));
+
 
         return view;
     }

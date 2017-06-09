@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#2ea67f"
     tools:context="viit.com.libraryviit.user.UserFragment">
 
@@ -13,27 +14,41 @@
         android:layout_marginRight="10dp"
         android:layout_marginTop="10dp">
 
-        <android.support.design.widget.TextInputLayout
+        <android.support.v7.widget.CardView
             android:id="@+id/tl_library_no"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColorHint="#f0f7f4"
             android:layout_marginBottom="10dp"
+            app:cardElevation="10dp"
             android:theme="@style/TextLabel">
-
-            <EditText
-                android:id="@+id/et_library_no"
+            <TableLayout
                 android:layout_width="match_parent"
-                android:layout_height="34dp"
-                android:background="@drawable/selector_bg_edit_2"
-                android:hint="@string/library_no"
-                android:inputType="textPersonName"
-                android:paddingBottom="4dp"
-                android:textColor="#f0f7f4"
-                android:textCursorDrawable="@drawable/bg_input_cursor_2" />
-        </android.support.design.widget.TextInputLayout>
+                android:layout_gravity="center"
+                android:layout_height="match_parent"
+                android:layout_marginTop="6dp"
+                android:layout_marginLeft="6dp"
+                android:layout_marginRight="6dp"
+                android:layout_marginBottom="6dp">
+            <TableRow>
+            <TextView
+                android:id="@+id/library_no"
+                android:layout_width="match_parent"
+                android:textSize="18dp"
+                android:text="Library Number:"
 
-        <android.support.design.widget.TextInputLayout
+                android:layout_height="match_parent" />
+            <TextView
+                android:id="@+id/et_library_no"
+                android:textSize="18dp"
+                android:height="30dp"
+                android:layout_width="match_parent" />
+            </TableRow>
+            </TableLayout>
+        </android.support.v7.widget.CardView>
+
+
+        <android.support.v7.widget.CardView
             android:id="@+id/fullName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -41,19 +56,41 @@
             android:layout_below="@id/tl_library_no"
             android:textColorHint="#f0f7f4"
             android:theme="@style/TextLabel">
-            <EditText
-                android:id="@+id/et_full_name"
+            <TableLayout
                 android:layout_width="match_parent"
-                android:layout_height="31dp"
-                android:background="@drawable/selector_bg_edit_2"
-                android:hint="@string/full_name"
-                android:inputType="textPersonName"
-                android:paddingBottom="6dp"
-                android:textColor="#f0f7f4"
-                android:textCursorDrawable="@drawable/bg_input_cursor_2" />
-        </android.support.design.widget.TextInputLayout>
+                android:layout_gravity="center"
+                android:layout_height="match_parent"
+                android:layout_marginTop="6dp"
+                android:layout_marginLeft="6dp"
+                android:layout_marginRight="6dp"
+                android:layout_marginBottom="6dp">
 
-        <android.support.design.widget.TextInputLayout
+                    <TextView
+                        android:id="@+id/full_name"
+                        android:layout_width="match_parent"
+                        android:textSize="18dp"
+                        android:text="Full Name:"
+
+                        android:layout_height="match_parent" />
+                    <TextView
+                        android:id="@+id/et_full_name"
+                        android:textSize="18dp"
+                        android:height="30dp"
+                        android:layout_width="match_parent" />
+
+            </TableLayout>
+            <!--<EditText-->
+                <!--android:id="@+id/et_full_name"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="31dp"-->
+                <!--android:background="@drawable/selector_bg_edit_2"-->
+                <!--android:hint="@string/full_name"-->
+                <!--android:inputType="textPersonName"-->
+                <!--android:paddingBottom="6dp"-->
+                <!--android:textColor="#f0f7f4" />-->
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
             android:id="@+id/tl_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -61,57 +98,96 @@
             android:layout_marginBottom="10dp"
             android:textColorHint="#f0f7f4"
             android:theme="@style/TextLabel">
-
-            <EditText
-                android:id="@+id/et_email"
+            <TableLayout
                 android:layout_width="match_parent"
-                android:layout_height="31dp"
-                android:background="@drawable/selector_bg_edit_2"
-                android:hint="@string/prompt_email"
-                android:inputType="textEmailAddress"
-                android:paddingBottom="6dp"
-                android:textColor="#f0f7f4"
-                android:textCursorDrawable="@drawable/bg_input_cursor_2" />
-        </android.support.design.widget.TextInputLayout>
+                android:layout_gravity="center"
+                android:layout_height="match_parent"
+                android:layout_marginTop="6dp"
+                android:layout_marginLeft="6dp"
+                android:layout_marginRight="6dp"
+                android:layout_marginBottom="6dp">
 
-        <android.support.design.widget.TextInputLayout
+                <TextView
+                    android:id="@+id/email_id"
+                    android:layout_width="match_parent"
+                    android:textSize="18dp"
+                    android:text="Email Id:"
+
+                    android:layout_height="match_parent" />
+                <TextView
+                    android:id="@+id/et_email"
+                    android:textSize="18dp"
+                    android:height="30dp"
+                    android:layout_width="match_parent" />
+
+            </TableLayout>
+
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
             android:id="@+id/tl_phno"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/tl_email"
             android:textColorHint="#f0f7f4"
+            android:layout_marginBottom="10dp"
             android:theme="@style/TextLabel">
-
-            <EditText
-                android:id="@+id/et_phno"
+            <TableLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/selector_bg_edit_2"
-                android:hint="@string/mobileno"
-                android:inputType="numberDecimal"
-                android:paddingBottom="6dp"
-                android:textColor="#f0f7f4"
-                android:textCursorDrawable="@drawable/bg_input_cursor_2" />
-        </android.support.design.widget.TextInputLayout>
+                android:layout_gravity="center"
+                android:layout_height="match_parent"
+                android:layout_marginTop="6dp"
+                android:layout_marginLeft="6dp"
+                android:layout_marginRight="6dp"
+                android:layout_marginBottom="6dp">
 
-        <android.support.design.widget.TextInputLayout
+                <TextView
+                    android:id="@+id/phone_num"
+                    android:layout_width="match_parent"
+                    android:textSize="18dp"
+                    android:text="Phone Number:"
+
+                    android:layout_height="match_parent" />
+                <TextView
+                    android:id="@+id/et_phno"
+                    android:textSize="18dp"
+                    android:height="30dp"
+                    android:layout_width="match_parent" />
+
+            </TableLayout>
+        </android.support.v7.widget.CardView>
+        <android.support.v7.widget.CardView
             android:id="@+id/tl_dept"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/tl_phno"
-            android:theme="@style/TextLabel">
-
-        </android.support.design.widget.TextInputLayout>
-
-        <Spinner
-            android:id="@+id/dept_spinner"
-            android:layout_width="match_parent"
-            android:layout_height="36dp"
-            android:layout_marginTop="12dp"
             android:textColorHint="#f0f7f4"
-            android:layout_below="@+id/tl_dept"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            android:theme="@style/TextLabel">
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_gravity="center"
+                android:layout_height="match_parent"
+                android:layout_marginTop="6dp"
+                android:layout_marginLeft="6dp"
+                android:layout_marginRight="6dp"
+                android:layout_marginBottom="6dp">
+
+                <TextView
+                    android:id="@+id/dept"
+                    android:layout_width="match_parent"
+                    android:textSize="18dp"
+                    android:text="Department:"
+
+                    android:layout_height="match_parent" />
+                <TextView
+                    android:id="@+id/et_dept"
+                    android:textSize="18dp"
+                    android:height="30dp"
+                    android:layout_width="match_parent" />
+
+            </TableLayout>
+        </android.support.v7.widget.CardView>
+
     </RelativeLayout>
 
 </FrameLayout>

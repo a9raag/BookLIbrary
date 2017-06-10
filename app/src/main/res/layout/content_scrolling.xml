@@ -122,6 +122,7 @@
                 android:layout_alignLeft="@+id/tableLayout"
                 android:layout_alignStart="@+id/tableLayout"
                 android:text="Reserved (0)"
+                android:onClick="updateReserveCount"
                 android:theme="@style/MyButton" />
 
         </LinearLayout>

@@ -362,10 +362,9 @@ public class MainActivity extends AppCompatActivity
 
             startActivityForResult(intent, RC_BARCODE_CAPTURE);
         } else if (id == R.id.booklist) {
-            Fragment bookFragment = new BookFragment();
+            Fragment gridViewFragment = new BookGridViewFragment();
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.flContent, bookFragment);
-            transaction.addToBackStack("BookList");
+            transaction.add(R.id.flContent, gridViewFragment);
             transaction.commit();
 
         } else if (id == R.id.departments) {
@@ -375,7 +374,10 @@ public class MainActivity extends AppCompatActivity
             editor.commit();
 
         } else if (id == R.id.nav_manage) {
-
+            Intent sendIntent = new Intent(Intent.ACTION_VIEW);
+            sendIntent.setType("plain/text");
+            sendIntent.setData(Uri.parse("library@viit.ac.in"));
+            sendIntent.setClassName("com.google.android.gm", "com.google.android.gm.ComposeActivityGmail");
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

@@ -54,9 +54,20 @@ public class BookDetailActivity extends AppCompatActivity implements ImageFrame.
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText()
+                Fragment ratingFrame = new RatingsFrame().newInstance(book.id);
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                if(!ratingLoaded[0]){
+                    transaction.add(R.id.bgFrame, ratingFrame);
+                    transaction.commit();
+                    ratingLoaded[0] =true;
+                }
+                else{
+                    launchFragment(book.imageLarge);
+                    ratingLoaded[0]=false;
+                }
             }
         });
+
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         launchFragment(book.imageSmall);
@@ -205,7 +216,6 @@ public class BookDetailActivity extends AppCompatActivity implements ImageFrame.
             count++;
             book.reserveCount = String.valueOf(count);
             b.setText("Un-reserve (" + count + ")");
-            reserveBook(book.getIsbn());
         }
     }
     public void launchFragment(String url){

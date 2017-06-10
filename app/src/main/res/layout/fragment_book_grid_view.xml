@@ -16,6 +16,7 @@
             android:layout_height="60dp"
             android:text="Top Books This Week"
             android:textSize="20dp"
+            android:visibility="gone"
         />
 
         <GridView

@@ -54,19 +54,7 @@ public class BookDetailActivity extends AppCompatActivity implements ImageFrame.
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Fragment ratingFrame = new RatingsFrame().newInstance(book.id);
-                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                if(!ratingLoaded[0]){
-
-                    transaction.add(R.id.bgFrame, ratingFrame);
-
-                    transaction.commit();
-                    ratingLoaded[0] =true;
-                }
-                else{
-                    launchFragment(book.imageLarge);
-                    ratingLoaded[0]=false;
-                }
+                Toast.makeText()
             }
         });
 

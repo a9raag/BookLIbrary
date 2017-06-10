@@ -4,10 +4,12 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -23,6 +25,11 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -46,6 +53,7 @@ import static viit.com.libraryviit.R.string.library_no;
 
 public class RegisterActivity extends AppCompatActivity {
 
+    private static final String TAG = "Register.class";
     @InjectView(R.id.fab)
     FloatingActionButton fab;
     @InjectView(R.id.cv_add)
@@ -64,6 +72,45 @@ public class RegisterActivity extends AppCompatActivity {
         Button submit = (Button) findViewById(R.id.bt_go);
         final ProgressBar userSearch = (ProgressBar) findViewById(R.id.user_serach_progress);
         final EditText library_no = (EditText) findViewById(R.id.et_library_no);
+        final EditText password = (EditText) findViewById(R.id.et_password);
+        final EditText repPassword = (EditText) findViewById(R.id.et_repeatpassword);
+        submit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (!password.getText().toString() .equals(repPassword.getText().toString()))
+                        Toast.makeText(getApplicationContext(), "Incorrect Passwords try again", Toast.LENGTH_SHORT).show();
+                    else {
+                        userSearch.setVisibility(View.VISIBLE);
+                        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("user/" + library_no.getText().toString());
+                        final Query query = mDatabase;
+
+                        ValueEventListener valueEventListener = new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                    User tempUser = dataSnapshot.getValue(User.class);
+                                if (tempUser != null) {
+                                    tempUser.setId(library_no.getText().toString());
+                                    signup(library_no.getText().toString(), password.getText().toString(), tempUser);
+
+                                } else {
+                                    Toast.makeText(getApplicationContext(), " Invalid Library Card number", Toast.LENGTH_SHORT).show();
+                                    userSearch.setVisibility(View.GONE);
+                                }
+
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        };
+                        query.addValueEventListener(valueEventListener);
+
+                    }
+                }
+            });
+
+
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 //            ShowEnterAnimation();
 //        }
@@ -79,47 +126,43 @@ public class RegisterActivity extends AppCompatActivity {
 
             }
         });
-        submit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                userSearch.setVisibility(View.VISIBLE);
-                DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("user/" + library_no.getText().toString());
-                final Query query = mDatabase;
 
-                ValueEventListener valueEventListener = new ValueEventListener()
-                {
+    }
+    public void signup(String user, final String password, final User tempUser){
+        final String email = user+"@viitlib.ac.in";
+        final FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
-                    public void onDataChange(DataSnapshot dataSnapshot)
-                    {
-                        User tempUser= dataSnapshot.getValue(User.class);
-                        if(tempUser!=null){
-                            tempUser.setId(library_no.getText().toString());
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d(TAG, "createUserWithEmail:success");
+                            FirebaseUser user = mAuth.getCurrentUser();
                             Intent intent = new Intent(getApplicationContext(), UserProfileActivity.class);
-                            Log.v("RegisterActivitySystem",library_no.getText().toString());
+                            saveInformation(email,password);
                             intent.putExtra("user",tempUser);
                             startActivity(intent);
                             finish();
+
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w(TAG, "createUserWithEmail:failure", task.getException());
+                            Toast.makeText(getApplicationContext(), "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
                         }
-                        else {
-                            Toast.makeText(getApplicationContext()," Invalid Library Card number", Toast.LENGTH_SHORT).show();
-                            userSearch.setVisibility(View.GONE);
-                        }
 
+                        // ...
                     }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError)
-                    {
-
-                    }
-                };
-                query.addValueEventListener(valueEventListener);
-
-            }
-        });
-
+                });
     }
-
+    public void saveInformation(String username,String password) {
+        SharedPreferences shared = getSharedPreferences("shared", MODE_PRIVATE);
+        SharedPreferences.Editor editor = shared.edit();
+        editor.putString("username", username);
+        editor.putString("password", password);
+        editor.commit();
+    }
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void ShowEnterAnimation() {

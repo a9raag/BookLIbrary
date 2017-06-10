@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.concurrent.ExecutionException;
 
+import viit.com.libraryviit.activities.BookDetailActivity;
+
 /**
  * Created by anurag on 23/2/17.
  */
@@ -26,6 +28,7 @@ public class Book implements Serializable{
     private String isbn;
     public String reserveCount;
     public String description;
+    public String totalCount;
     public String getDepartment() {
         return department;
     }
@@ -38,6 +41,8 @@ public class Book implements Serializable{
             this.studentRating ="4.0";
             this.profRating = "5.0";
             this.description = v.getVolumeInfo().getDescription();
+            this.reserveCount = String.valueOf(BookDetailActivity.randRagne(1,10));
+            this.totalCount = String.valueOf(BookDetailActivity.randRagne(10,40));
     }
     public void setDepartment(String department) {
         this.department = department;
@@ -95,6 +100,7 @@ public class Book implements Serializable{
         isbn = in.readString();
         pubYear = in.readString();
         description = in.readString();
+        totalCount = in.readString();
 
     }
 
@@ -176,8 +182,7 @@ public class Book implements Serializable{
         this.reserveCount="0";
         this.reservers=new ArrayList<>();
         this.description ="";
-        reservers.add("anurag");
-        reservers.add("krushika");
+
     }
 //
 //    @Override

@@ -3,6 +3,7 @@ package viit.com.libraryviit.activities;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.MatrixCursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -43,6 +44,7 @@ import com.google.api.services.books.model.Volume;
 import com.google.common.primitives.Ints;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -115,36 +117,43 @@ public class MainActivity extends AppCompatActivity
 
         final FirebaseDBHelper dbHelper = new FirebaseDBHelper();
 //        dbHelper.insertBook(new Book("Game of Thrones","RR Martin"));
-        new GetDataFromFirebase().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        mDatabase = FirebaseDatabase.getInstance().getReference("user/1302388");
-
-        final Query query = mDatabase;
-
-        ValueEventListener valueEventListener = new ValueEventListener()
-        {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot)
-            {
-                User u = dataSnapshot.getValue(User.class);
-                System.out.println(u.getFirstName());
-                ArrayList<String> booksReserved = new ArrayList<>();
-//                booksReserved.add("0070722064");
-//                u.setBooksReserved(booksReserved);
-                mDatabase.setValue(u);
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError)
-            {
-
-            }
-        };
-        query.addValueEventListener(valueEventListener);
+//        new GetDataFromFirebase().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+//        mDatabase = FirebaseDatabase.getInstance().getReference("user/1302388");
+//
+//        final Query query = mDatabase;
+//
+//        ValueEventListener valueEventListener = new ValueEventListener()
+//        {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot)
+//            {
+//                User u = dataSnapshot.getValue(User.class);
+//                System.out.println(u.getFirstName());
+//                ArrayList<String> booksReserved = new ArrayList<>();
+////                booksReserved.add("0070722064");
+////                u.setBooksReserved(booksReserved);
+//                mDatabase.setValue(u);
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError)
+//            {
+//
+//            }
+//        };
+//        query.addValueEventListener(valueEventListener);
         Fragment gridViewFragment = new BookGridViewFragment();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.add(R.id.flContent, gridViewFragment);
         transaction.commit();
+
+        SharedPreferences shared = getSharedPreferences("shared", MODE_PRIVATE);
+        String username = shared.getString("username",null);
+        String password =shared.getString("password",null);
+        if(shared.contains("username") && shared.contains("password")) {
+            signInUser(username, password);
+        }
 
     }
 
@@ -177,9 +186,9 @@ public class MainActivity extends AppCompatActivity
         transaction.add(R.id.flContent, deptFragment);
         transaction.commit();
     }
-    public void signInUser(){
+    public void signInUser(String username, String password){
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        mAuth.signInWithEmailAndPassword("anurag@viitlib.ac.in", "anurag")
+        mAuth.signInWithEmailAndPassword(username, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -198,6 +207,8 @@ public class MainActivity extends AppCompatActivity
 //                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
 //                            startActivity(intent);
 //                            finish();
+                            Toast.makeText(getApplicationContext(),"Authentication Successful",
+                                    Toast.LENGTH_SHORT).show();
                         }
 
                         // ...
@@ -251,13 +262,20 @@ public class MainActivity extends AppCompatActivity
         });
         return true;
     }
-    public void loadProfile(View v){
+    public String getCurrentUser(){
+        FirebaseAuth mAuth;
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        return currentUser.getEmail();
 
+    }
+    public void loadProfile(View v){
+        String username= getCurrentUser().replace("@viitlib.ac.in","").trim();
         BookDueNotification.notify(getApplicationContext(),"Book is due",0);
         mDrawer.closeDrawers();
         if(isNetworkAvailable()) {
             new GetDataFromFirebase().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-            mDatabase = FirebaseDatabase.getInstance().getReference("user/1302388");
+            mDatabase = FirebaseDatabase.getInstance().getReference("user/"+username);
 
             final Query query = mDatabase;
 
@@ -351,11 +369,10 @@ public class MainActivity extends AppCompatActivity
             transaction.commit();
 
         } else if (id == R.id.departments) {
-            Fragment deptFragment = new DepartmentFragment();
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.flContent, deptFragment);
-            transaction.addToBackStack("BookList");
-            transaction.commit();
+            SharedPreferences shared = getSharedPreferences("shared", MODE_PRIVATE);
+            SharedPreferences.Editor editor = shared.edit();
+            editor.clear();
+            editor.commit();
 
         } else if (id == R.id.nav_manage) {
 

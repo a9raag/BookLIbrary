@@ -8,13 +8,17 @@
             android:title="Scan ISBN" />
         <item
             android:id="@+id/booklist"
-            android:title="Books" />
+            android:title="Books"
+            android:icon="@drawable/ic_stat_book_due"
+            />
         <item
             android:id="@+id/departments"
-            android:title="Departments" />
+            android:icon="@android:drawable/ic_lock_power_off"
+            android:title="Sign Out" />
         <item
             android:id="@+id/nav_manage"
-            android:title="Tools" />
+            android:icon="@drawable/ic_menu_send"
+            android:title="Feedback" />
     </group>
 
 </menu>

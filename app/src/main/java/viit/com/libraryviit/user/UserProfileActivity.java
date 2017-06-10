@@ -158,6 +158,7 @@ public class UserProfileActivity extends AppCompatActivity  implements UserFragm
             switch (position){
                 case 0:
                     return new UserFragment().newInstance(user);
+
                 default:
                     return PlaceholderFragment.newInstance(position + 1);
             }

@@ -1,7 +1,9 @@
 package viit.com.libraryviit.activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -14,13 +16,19 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import viit.com.libraryviit.R;
@@ -28,6 +36,8 @@ import viit.com.libraryviit.book.Book;
 import viit.com.libraryviit.fragments.DepartmentFragment;
 import viit.com.libraryviit.fragments.ImageFrame;
 import viit.com.libraryviit.fragments.RatingsFrame;
+import viit.com.libraryviit.user.User;
+import viit.com.libraryviit.user.UserProfileActivity;
 
 public class BookDetailActivity extends AppCompatActivity implements ImageFrame.OnFragmentInteractionListener,RatingsFrame.OnFragmentInteractionListener{
     public Book book;
@@ -62,7 +72,6 @@ public class BookDetailActivity extends AppCompatActivity implements ImageFrame.
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         launchFragment(book.imageSmall);
-        book.reserveCount=String.valueOf(randRagne(1, 10));
         TextView title = (TextView) findViewById(R.id.book_title);
         TextView author = (TextView) findViewById(R.id.book_author);
         TextView sRating = (TextView) findViewById(R.id.book_s_rating);
@@ -77,21 +86,139 @@ public class BookDetailActivity extends AppCompatActivity implements ImageFrame.
         isbn.setText(book.getIsbn());
         description.setText(book.description);
         reserve.setText("Reserve Count ("+book.reserveCount +")");
+        Button reserves = (Button)findViewById(R.id.reserve);
+        ArrayList<String> userReserved  =  new ArrayList<>();
+        String username= getCurrentUser().replace("@viitlib.ac.in","").trim();
+        reserves.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateReserveCount(v);
+            }
+        });
+    }
 
+    public String getCurrentUser(){
+         FirebaseAuth mAuth;
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        return currentUser.getEmail();
+
+    }
+    public ArrayList<String> getReservedBooks(){
+        final ArrayList<String>[] books = new ArrayList[]{new ArrayList<>()};
+        String username= getCurrentUser().replace("@viitlib.ac.in","").trim();
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("user/"+username);
+        final Query query = mDatabase;
+        final ValueEventListener valueEventListener = new ValueEventListener()
+        {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot)
+            {
+                User u = dataSnapshot.getValue(User.class);
+                books[0] = u.getBooksReserved();
+                System.out.println(books[0]);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError)
+            {
+
+            }
+        };
+        query.addValueEventListener(valueEventListener);
+
+        return  books[0];
+    }
+    public void deleteReserves(){
+        String username= getCurrentUser().replace("@viitlib.ac.in","").trim();
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("user/"+username);
+        final ArrayList<String> arrayList = new ArrayList<>();
+
+
+        mDatabase = FirebaseDatabase.getInstance().getReference("user/"+username);
+        mDatabase.child("booksReserved").setValue(new ArrayList<>());
+    }
+    public void reserveBooks(DatabaseReference finalMDatabase, User u){
+        finalMDatabase.child("booksReserved").setValue(u.getBooksReserved());
+    }
+    public void reserveBook(final String isbn){
+        String username= getCurrentUser().replace("@viitlib.ac.in","").trim();
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("user/"+username);
+
+
+
+        mDatabase = FirebaseDatabase.getInstance().getReference("user/"+username);
+        final DatabaseReference finalMDatabase = mDatabase;
+        final Query query = mDatabase;
+        final ValueEventListener valueEventListener = new ValueEventListener()
+        {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot)
+            {
+                User u = dataSnapshot.getValue(User.class);
+                try {
+                    if (u.getBooksReserved().size() == 0) {
+                        final ArrayList<String> arrayList = new ArrayList<>();
+                        arrayList.add(isbn);
+                        finalMDatabase.child("booksReserved").setValue(arrayList);
+                    }
+                }catch (NullPointerException n){
+                    final ArrayList<String> arrayList = new ArrayList<>();
+                    arrayList.add(isbn);
+                    finalMDatabase.child("booksReserved").setValue(arrayList);
+                }
+                if( u.getBooksReserved() != null && u.getBooksReserved().size() < 4) {
+                    if (!u.getBooksReserved().contains(isbn)) {
+                        ArrayList<String> data = u.getBooksReserved();
+                        data.add(isbn);
+                        finalMDatabase.child("booksReserved").setValue(data);
+
+                    }
+                }
+                else if(u.getBooksReserved() != null && u.getBooksReserved().size() == 4){
+                    Toast.makeText(getApplicationContext(),"Maximum reserve limit reached 4",Toast.LENGTH_SHORT).show();
+                    int count = Integer.parseInt(book.reserveCount);
+                    Button b = (Button) findViewById(R.id.reserve);
+                    count--;
+                    book.reserveCount = String.valueOf(count);
+                    b.setText("Reserve Count (" + count + ")");
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError)
+            {
+
+            }
+        };
+        query.addValueEventListener(valueEventListener);
 
 
     }
-    public int randRagne(int min, int max){
+    public static int randRagne(int min, int max){
         return new Random().nextInt((max - min) + 1) + min;
     }
-
+    public boolean reserved = false;
     public void updateReserveCount(View v){
-        int count = Integer.parseInt(book.reserveCount);
-        Button b = (Button) findViewById(R.id.reserve);
-        b.setEnabled(false);
-        count++;
-        book.reserveCount=String.valueOf(count);
-        b.setText("Reserve Count ("+count+")");
+
+        if (reserved) {
+            reserved =false;
+            int count = Integer.parseInt(book.reserveCount);
+            Button b = (Button) findViewById(R.id.reserve);
+            count--;
+            book.reserveCount = String.valueOf(count);
+            b.setText("Reserve Count (" + count + ")");
+        }
+        else if (!reserved){
+
+            reserved =true;
+            int count = Integer.parseInt(book.reserveCount);
+            Button b = (Button) findViewById(R.id.reserve);
+            count++;
+            book.reserveCount = String.valueOf(count);
+            b.setText("Un-reserve (" + count + ")");
+            reserveBook(book.getIsbn());
+        }
     }
     public void launchFragment(String url){
         Fragment imageFrame = new ImageFrame().newInstance(url);

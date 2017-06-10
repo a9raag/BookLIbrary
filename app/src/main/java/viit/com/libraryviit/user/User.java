@@ -18,6 +18,7 @@ public class User implements Serializable {
     private String memBegDate;
     private String memEndDate;
     private String mobileNumber;
+    private ArrayList<String> reservedBooks;
 
     public String getId() {
         return id;
@@ -93,11 +94,11 @@ public class User implements Serializable {
     }
 
     public ArrayList<String> getBooksReserved() {
-        return booksReserved;
+        return reservedBooks;
     }
 
     public void setBooksReserved(ArrayList<String> booksReserved) {
-        this.booksReserved = booksReserved;
+        this.reservedBooks = booksReserved;
     }
 
 

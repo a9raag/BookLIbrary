@@ -110,6 +110,17 @@
                     android:textColor="#d3d3d3"
                     >
                 </Button>
+                <ProgressBar
+                    android:id="@+id/user_serach_progress"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_gravity="center_horizontal"
+                    android:indeterminate="true"
+                    android:background="@android:color/white"
+                    android:layout_width="150dp"
+                    android:visibility="gone"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/bt_go"
+                    android:layout_alignStart="@+id/bt_go" />
             </RelativeLayout>
 
 
